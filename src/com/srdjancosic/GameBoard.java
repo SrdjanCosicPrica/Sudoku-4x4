@@ -43,7 +43,7 @@ public class GameBoard {
     }
 
     boolean isValueValid(int value) {
-        return 0 < value && value < 10;
+        return 0 < value && value < 5;
     }
 
     public boolean correct() {

@@ -63,7 +63,7 @@ class Game {
     }
 
     private boolean awaitValueInput(int row, int column) {
-        System.out.print("Enter a value between 1-9: ");
+        System.out.print("Enter a value between 1-4: ");
         if (scanner.hasNextInt()) {
             int value = scanner.nextInt();
             if (!this.gameBoard.isValueValid(value)) {
