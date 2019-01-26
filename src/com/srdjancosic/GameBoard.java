@@ -18,6 +18,10 @@ public class GameBoard {
         };
     }
 
+    public void clear() {
+        this.initializeBoard();
+    }
+
     @Override
     public String toString() {
         return Arrays.deepToString(
