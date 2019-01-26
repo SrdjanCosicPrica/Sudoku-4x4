@@ -2,7 +2,7 @@ package com.srdjancosic;
 
 import java.util.Arrays;
 
-class GameBoard {
+public class GameBoard {
     private int[][] slots;
 
     private int[][] reservedSlots = {
@@ -43,7 +43,47 @@ class GameBoard {
     }
 
     boolean isValueValid(int value) {
-        return 0 < value  && value < 10;
+        return 0 < value && value < 10;
+    }
+
+    public boolean correct() {
+        boolean hasDiscrepancies = false;
+        for (int row = 0; row < 4; row++) {
+            for (int column = 0; column < 4; column++) {
+                final int value = this.slots[row][column];
+                if (value == 0) {
+                    hasDiscrepancies = true;
+                    System.out.printf(
+                        "Discrepancy: [row %d, column %d] has an empty value%n",
+                        row, column
+                    );
+                    continue;
+                }
+
+                for (int i = column + 1; i < 4; i++) {
+                    final boolean slotHasValue = this.slotHasValue(value, row, i);
+                    if (!hasDiscrepancies) hasDiscrepancies = slotHasValue;
+                }
+
+                for (int i = row + 1; i < 4; i++) {
+                    final boolean slotHasValue = this.slotHasValue(value, i, column);
+                    if (!hasDiscrepancies) hasDiscrepancies = slotHasValue;
+                }
+            }
+        }
+        return !hasDiscrepancies;
+    }
+
+    private boolean slotHasValue(int value, int row, int column) {
+        final int otherValue = this.slots[row][column];
+        if (value == otherValue) {
+            System.out.printf(
+                "Discrepancy: [row %d, column %d] and [row %d, column %d] are the same%n",
+                row, column, row, column
+            );
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -53,6 +93,7 @@ class GameBoard {
         ).replace("[[", ""
         ).replaceAll("[\\[\\]]", System.lineSeparator()
         ).replace("]]", ""
-        ).replace(",", "");
+        ).replace(",", ""
+        ).replace("0", "-");
     }
 }

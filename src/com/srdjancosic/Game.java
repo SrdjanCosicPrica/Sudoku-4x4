@@ -1,9 +1,6 @@
 package com.srdjancosic;
 
-import com.srdjancosic.commands.Command;
-import com.srdjancosic.commands.HelpCommand;
-import com.srdjancosic.commands.QuitCommand;
-import com.srdjancosic.commands.ResetCommand;
+import com.srdjancosic.commands.*;
 
 import java.util.Map;
 import java.util.Scanner;
@@ -13,6 +10,7 @@ class Game {
     private GameBoard gameBoard;
 
     private static Map<String, Command> choices = Map.of(
+        "done", new DoneCommand(),
         "reset", new ResetCommand(),
         "quit", new QuitCommand(),
         "help", new HelpCommand()
@@ -39,11 +37,14 @@ class Game {
         System.out.print("Enter a row index between 0-3: ");
         if (scanner.hasNextInt()) {
             int row = scanner.nextInt();
-            if (row < 1 || row > 3)
-                return awaitColumnInput(row);
+            return awaitColumnInput(row);
         }
         final String choice = scanner.next();
-        choices.get(choice).call(gameBoard);
+        try {
+            choices.get(choice).call(gameBoard);
+        } catch (NullPointerException ignored) {
+            System.out.printf("Unrecognized command %s%n", choice);
+        }
         return !choice.equals("help");
     }
 
