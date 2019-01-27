@@ -61,12 +61,12 @@ public class GameBoard {
                 }
 
                 for (int i = column + 1; i < 4; i++) {
-                    final boolean slotHasValue = this.slotHasValue(value, row, i);
+                    final boolean slotHasValue = this.compareSlots(row, column, row, i);
                     if (!hasDiscrepancies) hasDiscrepancies = slotHasValue;
                 }
 
                 for (int i = row + 1; i < 4; i++) {
-                    final boolean slotHasValue = this.slotHasValue(value, i, column);
+                    final boolean slotHasValue = this.compareSlots(row, column, i, column);
                     if (!hasDiscrepancies) hasDiscrepancies = slotHasValue;
                 }
             }
@@ -74,12 +74,11 @@ public class GameBoard {
         return !hasDiscrepancies;
     }
 
-    private boolean slotHasValue(int value, int row, int column) {
-        final int otherValue = this.slots[row][column];
-        if (value == otherValue) {
+    private boolean compareSlots(int row1, int column1, int row2, int column2) {
+        if (this.slots[row1][column1] == this.slots[row2][column2]) {
             System.out.printf(
                 "Discrepancy: [row %d, column %d] and [row %d, column %d] are the same%n",
-                row, column, row, column
+                row1, column1, row2, column2
             );
             return true;
         }
